@@ -1,31 +1,28 @@
 #include <iostream>
 #include <algorithm>
-#include <string>
 #include <vector>
 
 using namespace std;
 
+bool comp(pair<int, int> a, pair<int, int> b) {
+    if(a.second == b.second) return a.first < b.first;
+    return a.second < b.second;
+}
+
 int main() {
-    string buf;
-    cin >> buf;
-    int len = buf.size();
+    int N;
+    cin >> N;
+    vector<pair<int, int>> v(N);
+    for (int i = 0; i < N; ++i) cin >> v[i].first >> v[i].second;
+    sort(v.begin(), v.end(), comp);
 
-    vector<int> v(len);
-    int val{0};
-    bool zeroExist{false};
+    int counter{1}, startTime{v[0].second};
 
-    for (int i = 0; i < len; ++i) {
-        v[i] = buf[i] - '0';
-        if(v[i] == 0 && !zeroExist) zeroExist = true;
-        val += v[i];
+    for (int i = 1; i < N; ++i) {
+        if (startTime <= v[i].first) {
+            startTime = v[i].second, counter++;
+        }
     }
 
-    if (!zeroExist || val % 3 != 0) {
-        cout << -1 << endl;
-    }
-    else{
-        sort(v.begin(), v.end());
-        for(int i=len - 1; i>=0; --i) cout << v[i];
-        cout << endl;
-    }
+    cout << counter << "\n";
 }
