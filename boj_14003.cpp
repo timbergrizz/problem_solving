@@ -1,4 +1,4 @@
-// first platinum! yay!
+//first platinum! yay!
 #include <bits/stdc++.h>
 
 #define NEGINF -1000000001
@@ -8,9 +8,10 @@ ll v[1000001];
 ll dp[1000001];
 
 int main() {
-    ios::sync_with_stdio(false):
+    ios::sync_with_stdio(false);
     cin.tie(NULL);
     cout.tie(NULL);
+
     int N;
     cin >> N;
     for (int i = 1; i <= N; ++i) {
@@ -21,8 +22,8 @@ int main() {
     vector<ll> lis;
 
     lis.push_back(NEGINF);
-
     ll maxVal= 0;
+
     for (int i = 1; i <= N; ++i) {
         if (lis.back() < v[i]) {
             lis.push_back(v[i]);
