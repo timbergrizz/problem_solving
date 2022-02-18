@@ -1,41 +1,42 @@
-#include <iostream>
-#include <memory.h>
+#include <bits/stdc++.h>
+
 using namespace std;
 
-int N;
-int A[1001], dp[1001][2];
-
-void dp1(){
-    for(int i=2; i <=N ; ++i){
-        for(int j=1; j < i; ++j){
-            if(A[i] > A[j] && dp[i][0] < dp[j][0] + 1)  dp[i][0] = dp[j][0] + 1;
-        }
-    }
-
-    for(int i=N - 1; i >= 1 ; --i){
-        for(int j=N; j > i; --j){
-            if(A[i] > A[j] && dp[i][1] < dp[j][1] + 1) dp[i][1] = dp[j][1] + 1;
-        }
-    }
-}
-
-int getResult() {
-    int ret{0};
-    for (int i = 1; i <= N; ++i) {
-        if(ret < dp[i][0] + dp[i][1] - 1) ret = dp[i][0] + dp[i][1] - 1;
-    }
-    return ret;
-}
-
 int main() {
-    memset(A, 0, sizeof A);
-
+    int N;
     cin >> N;
-    for (int i = 1; i <= N; ++i) {
-        cin >> A[i];
-        dp[i][0] = dp[i][1] = 1;
+    vector<int> A(N);
+    for (int &i: A) cin >> i;
+
+    vector<int> lis(1);
+    vector<pair<int, int>> dp(N, {0, 0});
+
+    for (int i = 0; i < N; ++i) {
+        if (lis.back() < A[i]) {
+            dp[i].first = (int) lis.size();
+            lis.push_back(A[i]);
+        } else {
+            auto it = lower_bound(lis.begin(), lis.end(), A[i]);
+            *it = A[i], dp[i].first = (int) (it - lis.begin());
+        }
     }
 
-    dp1();
-    cout << getResult() << "\n";
+    lis = vector<int>(1);
+    for (int i = N - 1; i >= 0; --i) {
+        if (lis.back() < A[i]) {
+            dp[i].second = (int) lis.size();
+            lis.push_back(A[i]);
+        } else {
+            auto it = lower_bound(lis.begin(), lis.end(), A[i]);
+            *it = A[i], dp[i].second = (int) (it - lis.begin());
+        }
+    }
+
+    int result{0};
+    for (int i = 0; i < N; ++i) {
+//        cout << dp[i].first << " " << dp[i].second << endl;
+        result = max(dp[i].first + dp[i].second, result);
+    }
+
+    cout << result - 1 << "\n";
 }

@@ -1,39 +1,37 @@
-#include <iostream>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
 
-int v[4000000];
+bool checkPrime(int n){
+    if(n == 1) return false;
+    for(int i=2; i * i <= n; ++i){
+        if(!(n % i)) return false;
+    }
+    return true;
+}
 
-int main() {
-    int N;
-    cin >> N;
-    bool flag = true;
-    int cnt{0};
-    for (int i = 2; i <= N; ++i) {
-        flag = true;
-        for (int j = 2; j * j <= i; ++j) {
-            if (!(i % j)) {
-                flag = false;
-                break;
-            }
-        }
-        if (flag) v[cnt++] = i;
+int main(){
+    vector<int> primeNum;
+    int N; cin >> N;
+    primeNum.push_back(2);
+    for(int i=3; i <= N; i += 2){
+        if(checkPrime(i)) primeNum.push_back(i);
     }
 
-    int l = 0, r = 0;
-    long long sum{}, counter{0};
+    auto l = primeNum.begin();
+    auto r = primeNum.begin();
+    long long sum{0}, result{0};
 
-    while (r <= cnt) {
-        if (sum >= N) {
-            if (sum == N) ++counter;
-            sum -= v[l];
+    while(l <= r){
+        if(sum < N) {
+            if(r == primeNum.end()) break;
+            sum += *r;
+            r++;
+        }
+        else{
+            if(sum == N) result++;
+            sum -= *l;
             l++;
         }
-        else {
-            sum += v[r];
-            ++r;
-        }
     }
-    cout << counter << "\n";
+    cout << result << "\n";
 }
