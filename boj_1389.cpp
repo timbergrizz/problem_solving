@@ -1,68 +1,47 @@
-#include <iostream>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
 
-class Graph{
-public:
-    vector<vector<int>> v;
-    int N;
-    Graph(int _N){
-        N = _N;
-        for(int i=0; i<N; ++i){
-            v.push_back(vector<int>(N));
-            v[i][i] = -1;
+bool v[101][101]{false, };
+int res[101][101]{0, };
+int N;
+
+int floydwarshall(){
+    for(int i=1; i <= N; ++i){
+        for(int j=1; j <= N; ++j) {
+            if(i == j) continue;
+            else if(!v[i][j]) res[i][j] = N + 1;
+            else res[i][j] = 1;
         }
     }
-
-    void connect(int a, int b){
-        v[a][b] = v[b][a] = 1;
-    }
-
-    int dist_calc(){
-        int min = 0, minIdx = 0;
-        for(int i=0; i<N; ++i){
-            for(int i=0; i<N; ++i){
-                v[i][i] = -1;
-            }
-            vector<int> p{i};
-            v[i][i] = 0;
-            bfs(p, 0);
-
-            int sum = 0;
-            for(int i=0; i<N; ++i){
-                //                cout << v[i][i] << " ";
-                sum += v[i][i];
-            }
-            //            cout << sum << endl << endl;
-            if(min == 0) min = sum, minIdx = i;
-            else if(min > sum) min = sum, minIdx = i;
-        }
-
-        return minIdx;
-    }
-
-    void bfs(vector<int> p, int counter){
-        vector<int> n;
-        for(int i=0; i<p.size(); ++i){
-            for(int j=0; j<N; ++j){
-                if(v[p[i]][j] == 1 && v[j][j] == -1){
-                    //                    cout << p[i] << j << endl;
-                    v[j][j] = counter + 1;
-                    n.push_back(j);
-                }
+    for(int k=1; k <= N; ++k){
+        for(int i=1; i <= N; ++i) {
+            for(int j=1; j <= N; ++j) {
+                res[i][j] = min(res[i][j], res[i][k] + res[k][j]);
             }
         }
-        if(!n.empty()) bfs(n, counter + 1);
     }
-};
 
-int main(){
-    int N, M; cin >> N >> M;
-    Graph g{N};
+    int minIdx{0}, minVal{1000000001};
 
-    for(int i=0; i<M; ++i){
-        int fir, sec; cin >> fir >> sec;
-        g.connect(fir - 1, sec - 1);
+    for(int i=1; i <= N; ++i){
+        int sum{0};
+        for(int j=1; j <= N; ++j) {
+            sum += res[i][j];
+        }
+        if(minVal > sum) minIdx = i, minVal = sum;
     }
-    cout << g.dist_calc() + 1 << endl;
+
+    return minIdx;
+}
+
+int main() {
+    int M;
+    cin >> N >> M;
+    int fir, sec;
+
+    while(M--){
+        cin >> fir >> sec;
+        v[fir][sec] = v[sec][fir] = true;
+    }
+    cout << floydwarshall() << '\n';
 }
