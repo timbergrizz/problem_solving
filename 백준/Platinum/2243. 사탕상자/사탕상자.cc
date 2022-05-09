@@ -19,26 +19,20 @@ void update(vl &tree, ll start, ll end, ll node, ll key, ll cnt) {
     tree[node] = tree[node * 2] + tree[node * 2 + 1];
 }
 
-ll getKey(vl &tree, ll start, ll end, ll node, ll k) {
-    if (start == end) return start;
-    ll mid = (start + end) / 2, diff = tree[node * 2];
-
-    if (k <= diff) return getKey(tree, start, mid, node * 2, k);
-    else return getKey(tree, mid + 1, end, node * 2 + 1, k - diff);
-}
-
-void reduce(vl &tree, ll start, ll end, ll node, ll k) {
+ll reduce(vl & tree, ll start, ll end, ll node, ll k) {
     if (start == end) {
         tree[node] -= 1;
-        return;
+        return start;
     }
 
-    ll mid = (start + end) / 2, diff = tree[node * 2];
+    ll result, mid = (start + end) / 2, diff = tree[node * 2];
+//    cout << start << " " << end << " " << tree[node] << " " << diff << endl;
 
-    if (k <= diff) reduce(tree, start, mid, node * 2, k);
-    else reduce(tree, mid + 1, end, node * 2 + 1, k - diff);
+    if (k <= diff) result = reduce(tree, start, mid, node * 2, k);
+    else result = reduce(tree, mid + 1, end, node * 2 + 1, k - diff);
 
     tree[node] = tree[node * 2] + tree[node * 2 + 1];
+    return result;
 }
 
 int main() {
@@ -49,15 +43,14 @@ int main() {
     cin >> N;
     ll c1, c2, c3;
     vl tree(4000000);
-
     while (N--) {
         cin >> c1 >> c2;
+//        cout << tree[1] << endl;
 
-        if (c1 == 1) {
-            cout << getKey(tree, 0, 1000000, 1, c2) << "\n";
-            reduce(tree, 0, 1000000, 1, c2);
-        } else {
+        if (c1 == 1) cout << reduce(tree, 0, 1000000, 1, c2) << "\n";
+        else {
             cin >> c3;
+//            cout << c1 << c2 << c3 << endl;
             update(tree, 0, 1000000, 1, c2, c3);
         }
 
