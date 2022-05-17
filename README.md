@@ -1,0 +1,2 @@
+# boj
+i want diamond
