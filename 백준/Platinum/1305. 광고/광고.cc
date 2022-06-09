@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 
 #define FOR(i, init, N) for(int i=init; i<= N; ++i)
+#define FASTIO ios::sync_with_stdio(false); cin.tie(NULL);
 using namespace std;
 
 typedef vector<int> vi;
