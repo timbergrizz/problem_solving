@@ -8,7 +8,7 @@ int main(){
         else cout << 4 << endl;
     }
     else{
-        if(y > 2) cout << 2 << endl;
+        if(y > 0) cout << 2 << endl;
         else cout << 3 << endl;
     }
 }
