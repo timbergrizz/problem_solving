@@ -15,7 +15,7 @@ int n, m;
 
 bool visited[MAX]{false,};
 vi v[MAX], vt[MAX];
-int scc[MAX]{0, };
+int scc[MAX]{0,};
 
 void dfs(int cur, si &s) {
     if (visited[cur]) return;
@@ -46,39 +46,43 @@ int check(int N) {
     return 1;
 }
 
+int main() {
+    FASTIO
+    int N, M;
+    cin >> N >> M;
 
-int main(void) {
-    ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
-    cin >> n >> m;
-    for (int i = 0; i < m; i++) {
-        int x, y; cin >> x >> y;
-        if (x < 0) x = n - x;
-        if (y < 0) y = n - y;
+    int c1, c2;
+    while (M--) {
+        cin >> c1 >> c2;
+        c1 = NEG(c1, N), c2 = NEG(c2, N);
 
-        vt[x].push_back(OP(y, n));
-        vt[y].push_back(OP(x, n));
-        v[OP(y, n)].push_back(x);
-        v[OP(x, n)].push_back(y);
+        v[OP(c1, N)].push_back(c2);
+        v[OP(c2, N)].push_back(c1);
+
+        vt[c1].push_back(OP(c2, N));
+        vt[c2].push_back(OP(c1, N));
     }
-    stack<int> s;
-    for (int i = 1; i <= 2 * n; i++) {
-        if (!visited[i]) dfs(i, s);
-    }
-    int r = 0;
-    memset(visited, 0, sizeof(visited));
+
+    si s;
+
+    FOR(i, 2 * N) dfs(i, s);
+    int cnt{1};
+
+    memset(visited, 0, sizeof visited);
 
     while (!s.empty()) {
-        int t = s.top(); s.pop();
-        if (visited[t]) continue;
-        rev_dfs(t, r++);
+        int t = s.top();
+        s.pop();
+
+        if (!visited[t]) {
+            rev_dfs(t, cnt);
+            cnt++;
+        }
     }
 
-    int f = 1;
-    for (int i = 1; i <= n; i++) {
-        if (scc[i] == scc[n + i]) f = 0;
-    }
-    cout << f << "\n";
-    if (f == 1) {
-        for (int i = 1; i <= n; i++) cout << (scc[i] > scc[n + i]) << " ";
-    }
+    if (check(N)) {
+        cout << 1 << "\n";
+        FOR(i, N) cout << (scc[i] > scc[i + N]) << " ";
+        cout << "\n";
+    } else cout << 0 << "\n";
 }
