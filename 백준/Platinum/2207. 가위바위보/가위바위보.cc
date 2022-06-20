@@ -25,14 +25,12 @@ void dfs(int cur, si &s) {
     s.push(cur);
 }
 
-void rev_dfs(int x, int y) {
-    visited[x] = true;
-    scc[x] = y;
-    for (int next: vt[x]) {
-        if (!visited[next]) rev_dfs(next, y);
+void rev_dfs(int cur, int idx) {
+    visited[cur] = true, scc[cur] = idx;
+    for (int i: vt[cur]) {
+        if (!visited[i]) rev_dfs(i, idx);
     }
 }
-
 
 void SCC() {
     si s;
