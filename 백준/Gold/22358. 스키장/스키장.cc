@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#define FASTIO ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 
 using namespace std;
 int N, M, K, S, T;
@@ -25,6 +26,7 @@ void dp_calc() {
 }
 
 int main() {
+    FASTIO
     cin >> N >> M >> K >> S >> T;
     ll c1, c2, c3;
 
