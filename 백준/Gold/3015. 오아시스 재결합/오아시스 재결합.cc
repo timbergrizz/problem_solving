@@ -9,6 +9,7 @@ typedef pair<ll, ll> pll;
 typedef vector<pll> vl;
 
 int main() {
+    FASTIO
     int N;
     cin >> N;
     vl v(N + 1);
