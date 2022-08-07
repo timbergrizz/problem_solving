@@ -25,13 +25,12 @@ ll dfs(ll cur, ll type) {
     ll &ret = dp[cur][type];
     if (ret != -1) return ret;
 
-    if (adj[cur].empty()) return ret = type;
+    ret = type;
+    if (adj[cur].empty()) return ret;
 
     if (!type) {
-        ret = 0;
         for (ll i: adj[cur]) ret += dfs(i, 1);
     } else {
-        ret = 1;
         for (ll i : adj[cur]) ret += min(dfs(i, 1), dfs(i, 0));
     }
 
