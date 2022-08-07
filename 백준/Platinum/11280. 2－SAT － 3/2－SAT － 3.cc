@@ -10,23 +10,15 @@ typedef stack<int> si;
 bool visited[20202];
 vvi v, vt;
 vi scc;
-//
-//void dfs(int cur, si &s) {
-//    visited[cur] = true;
-//
-//    for (int i: graph[cur]) {
-//        if (!visited[i]) dfs(i, s);
-//    }
-//
-//    s.push(cur);
-//}
-void dfs(int x, si & s) {
+
+void dfs(int x, si &s) {
     visited[x] = true;
-    for(int next : v[x]) {
-        if(!visited[next]) dfs(next, s);
+    for (int next: v[x]) {
+        if (!visited[next]) dfs(next, s);
     }
     s.push(x);
 }
+
 //
 //void revDfs(int cur, int cnt) {
 //    visited[cur] = true, scc[cur] = cnt;
@@ -34,11 +26,11 @@ void dfs(int x, si & s) {
 //        if (!visited[i]) revDfs(i, cur);
 //    }
 //}
-void re_dfs(int x, int y){
+void re_dfs(int x, int y) {
     visited[x] = true;
     scc[x] = y;
-    for(int next : vt[x]) {
-        if(!visited[next]) re_dfs(next, y);
+    for (int next: vt[x]) {
+        if (!visited[next]) re_dfs(next, y);
     }
 }
 
